@@ -4,7 +4,7 @@ export interface IAddProductAction {
   product: IProduct;
 }
 
-export class  AddProductAction {
+export class AddProductAction {
   static readonly type = '[Product] Add';
   constructor(public product: IProduct) {}
 }

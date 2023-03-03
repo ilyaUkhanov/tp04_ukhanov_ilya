@@ -1,5 +1,4 @@
 export type IProduct = {
-  value: string;
   title: string;
   price: number;
 }

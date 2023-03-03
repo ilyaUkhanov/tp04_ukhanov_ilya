@@ -6,5 +6,5 @@ export interface IRemoveProductAction {
 
 export class RemoveProductAction {
   static readonly type = '[Product] Remove';
-  constructor(public name: string) {}
+  constructor(public product: IProduct) {}
 }

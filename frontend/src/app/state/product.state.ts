@@ -35,7 +35,7 @@ export class ProductState {
     context.setState({
       ...state,
       products: [
-        ...state.products.filter(prod => prod.value !== action.product.value),
+        ...state.products.filter(prod => prod.title !== action.product.title),
       ]
     });
   }

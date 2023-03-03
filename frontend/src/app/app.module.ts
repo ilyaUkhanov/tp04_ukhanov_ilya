@@ -9,6 +9,9 @@ import { HttpClientModule} from '@angular/common/http'
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './components/form/form.component';
+import { NgxsModule } from "@ngxs/store";
+import {ProductState} from "./state/product.state";
+import {environment} from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -22,7 +25,8 @@ import { FormComponent } from './components/form/form.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxsModule.forRoot([ProductState], { developmentMode: !environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
