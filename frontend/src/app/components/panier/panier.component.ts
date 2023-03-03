@@ -16,7 +16,7 @@ import {RemoveProductPanierAction} from "../../actions/removeProductPanier.actio
   styleUrls: ['./panier.component.css']
 })
 export class PanierComponent implements OnInit {
-  @Select((state: IProductState) => state.panierProducts) panierProducts!: Observable<IProduct[]>;
+  @Select(ProductState) panierProducts!: Observable<IProductState>;
   products: IProduct[] = [];
 
   constructor(private actions: Actions,
@@ -24,21 +24,9 @@ export class PanierComponent implements OnInit {
               private filterService: FilterService,
               private store: Store) {}
   ngOnInit() {
-    this.actions
-      .pipe(ofActionDispatched(AddProductPanierAction))
-      .subscribe((products) => {
-        console.log("CHANGE PANIER PRODS", products);
-        const store = this.store.selectSnapshot(ProductState);
-        this.products = store.panierProducts;
-      });
-
-    this.actions
-      .pipe(ofActionDispatched(RemoveProductPanierAction))
-      .subscribe((products) => {
-        console.log("CHANGE PANIER PRODS", products);
-        const store = this.store.selectSnapshot(ProductState);
-        this.products = store.panierProducts;
-      });
+    this.panierProducts.subscribe((store) => {
+      this.products = store.panierProducts;
+    })
   }
 
   submitRemoveProduct(product: IProduct) {
