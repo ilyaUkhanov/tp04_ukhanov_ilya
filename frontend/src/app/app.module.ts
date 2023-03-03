@@ -12,13 +12,15 @@ import { FormComponent } from './components/form/form.component';
 import { NgxsModule } from "@ngxs/store";
 import {ProductState} from "./state/product.state";
 import {environment} from "../environments/environment";
+import {PanierComponent} from "./components/panier/panier.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     ListProductComponent,
     FilterComponent,
-    FormComponent
+    FormComponent,
+    PanierComponent
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,7 @@ import {ProductState} from "../../state/product.state";
 import {Observable, withLatestFrom} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RemoveProductAction} from "../../actions/removeProduct.actions";
+import {AddProductPanierAction} from "../../actions/addProductPanier.actions";
 
 @Component({
   selector: 'app-list-product',
@@ -63,12 +64,8 @@ export class ListProductComponent implements OnInit {
     this.addProduct(product);
   }
   submitRemoveProduct(product: IProduct) {
-    this.removeProduct(product);
-  }
-
-  addProduct(product: IProduct) {
     this.store
-      .dispatch(new AddProductAction(product))
+      .dispatch(new RemoveProductAction(product))
       // @ts-ignore
       .pipe(withLatestFrom(this.products))
       .subscribe(([_, products]) => {
@@ -77,9 +74,14 @@ export class ListProductComponent implements OnInit {
       });
   }
 
-  removeProduct(product: IProduct) {
+  submitAddPanierProduct(product: IProduct) {
+    console.log("SUBMIT");
+    this.store.dispatch(new AddProductPanierAction(product))
+  }
+
+  addProduct(product: IProduct) {
     this.store
-      .dispatch(new RemoveProductAction(product))
+      .dispatch(new AddProductAction(product))
       // @ts-ignore
       .pipe(withLatestFrom(this.products))
       .subscribe(([_, products]) => {
