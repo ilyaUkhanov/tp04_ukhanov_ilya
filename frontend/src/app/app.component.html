@@ -2,8 +2,18 @@
   <title>TP03 Ukhanov Ilya</title>
 </head>
 <body>
+
+  <nav>
+    <a [routerLink] = "['']" > Home </a>
+    <a [routerLink] = "['']" > Compte client </a>
+    <a [routerLink] = "['product']" > Catalogue </a>
+    <a [routerLink] = "['product/details/1']" > Détail d'un article </a>
+    <a [routerLink] = "['panier']" > Panier </a>
+  </nav>
+
+  <div> Articles dans le Panier: {{ numberPanierProducts }} </div>
   <div class="content" role="main">
     <h2>{{ title }}</h2>
   </div>
+  <router-outlet></router-outlet>
 </body>
-<filter></filter>

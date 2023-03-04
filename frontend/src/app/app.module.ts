@@ -9,10 +9,19 @@ import { HttpClientModule} from '@angular/common/http'
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './components/form/form.component';
-import { NgxsModule } from "@ngxs/store";
-import {ProductState} from "./state/product.state";
+import {NgxsModule, Select} from "@ngxs/store";
+import {IProductState, ProductState} from "./state/product.state";
 import {environment} from "../environments/environment";
 import {PanierComponent} from "./components/panier/panier.component";
+import {DetailComponent} from "./components/detail/detail.component";
+import {RouterModule, Routes} from "@angular/router";
+
+const appRoutes: Routes = [
+  {path: '', component: FilterComponent},
+  { path: 'product/details/:id', component: DetailComponent },
+  { path: 'product', component: ListProductComponent },
+  { path: 'panier', component: PanierComponent },
+]
 
 @NgModule({
   declarations: [
@@ -20,7 +29,8 @@ import {PanierComponent} from "./components/panier/panier.component";
     ListProductComponent,
     FilterComponent,
     FormComponent,
-    PanierComponent
+    PanierComponent,
+    DetailComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +38,10 @@ import {PanierComponent} from "./components/panier/panier.component";
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxsModule.forRoot([ProductState], { developmentMode: !environment.production })
+    NgxsModule.forRoot([ProductState], { developmentMode: !environment.production }),
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

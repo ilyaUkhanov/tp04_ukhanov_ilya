@@ -5,7 +5,7 @@ import {IProduct, IProductFromServer} from "../../types/products";
 import {Select, Store} from "@ngxs/store";
 import {CONVERTER_PRODUCTS} from "../../converters/products-converter";
 import {AddProductAction} from "../../actions/addProduct.actions";
-import {ProductState} from "../../state/product.state";
+import {IProductState, ProductState} from "../../state/product.state";
 import {Observable, withLatestFrom} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RemoveProductAction} from "../../actions/removeProduct.actions";
@@ -17,10 +17,10 @@ import {AddProductPanierAction} from "../../actions/addProductPanier.actions";
   styleUrls: ['./list-product.component.css']
 })
 export class ListProductComponent implements OnInit {
-
-  // @ts-ignore
-  @Select(ProductState) products: Observable<IProduct[]>;
+  @Select(ProductState) productState!: Observable<IProductState>;
   filteredProducts: IProduct[] = [];
+
+  nextID: number = 0;
 
   public ProductFormIdentification!: FormGroup;
 
@@ -29,7 +29,7 @@ export class ListProductComponent implements OnInit {
               private httpService: ProductsRepositoryService,
               private filterService: FilterService,
               private store: Store) {}
-  title = 'TP3';
+
   ngOnInit() {
     this.ProductFormIdentification = this.formBuilder.group({
       label: ['',Validators.required],
@@ -53,41 +53,40 @@ export class ListProductComponent implements OnInit {
       this.isLoadingProducts = false;
     })
 
-    this.products.subscribe(() => {});
+
+    this.productState.subscribe((productState) => {
+      // Trouver nextID
+      let biggestID = 0;
+      productState.products.map(prod => {
+        if (biggestID < (prod?.id ?? 0)) biggestID = prod?.id ?? 0;
+        return prod;
+      })
+
+      this.nextID = biggestID + 1;
+
+      // Assigner les products
+      this.filteredProducts = this.getFilteredProducts(productState.products);
+    });
   }
 
   submitAddProduct() {
     const product = {
+      id: this.nextID,
       title: this.ProductFormIdentification.get('label')?.value ?? "",
       price: this.ProductFormIdentification.get('price')?.value ?? 0,
     };
     this.addProduct(product);
   }
   submitRemoveProduct(product: IProduct) {
-    this.store
-      .dispatch(new RemoveProductAction(product))
-      // @ts-ignore
-      .pipe(withLatestFrom(this.products))
-      .subscribe(([_, products]) => {
-        // @ts-ignore
-        this.filteredProducts = products.products;
-      });
+    this.store.dispatch(new RemoveProductAction(product))
   }
 
   submitAddPanierProduct(product: IProduct) {
-    console.log("SUBMIT");
     this.store.dispatch(new AddProductPanierAction(product))
   }
 
   addProduct(product: IProduct) {
-    this.store
-      .dispatch(new AddProductAction(product))
-      // @ts-ignore
-      .pipe(withLatestFrom(this.products))
-      .subscribe(([_, products]) => {
-        // @ts-ignore
-        this.filteredProducts = products.products;
-      });
+    this.store.dispatch(new AddProductAction(product))
   }
 
   getFilteredProducts(products: IProduct[]) {

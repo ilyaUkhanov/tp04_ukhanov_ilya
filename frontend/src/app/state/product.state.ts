@@ -39,7 +39,7 @@ export class ProductState {
     context.setState({
       ...state,
       products: [
-        ...state.products.filter(prod => prod.title !== action.product.title),
+        ...state.products.filter(prod => prod.id !== action.product.id),
       ]
     });
   }
@@ -48,7 +48,6 @@ export class ProductState {
   @Action(AddProductPanierAction)
   addProductPanierAction(context: StateContext<IProductState>, action: IAddProductPanierAction) {
     const state = context.getState();
-    console.log("ADD PROD PANIER ACTION", state, action.product)
     context.setState({
       ...state,
       panierProducts: [
@@ -64,7 +63,7 @@ export class ProductState {
     context.setState({
       ...state,
       panierProducts: [
-        ...state.panierProducts.filter(prod => prod.title !== action.product.title),
+        ...state.panierProducts.filter(prod => prod.id !== action.product.id),
       ]
     });
   }

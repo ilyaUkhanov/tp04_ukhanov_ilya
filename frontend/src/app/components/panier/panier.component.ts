@@ -36,7 +36,6 @@ export class PanierComponent implements OnInit {
   removeProduct(product: IProduct) {
     this.store
       .dispatch(new RemoveProductPanierAction(product))
-      // @ts-ignore
       .pipe(withLatestFrom(this.products))
       .subscribe(([_, products]) => {
         // @ts-ignore

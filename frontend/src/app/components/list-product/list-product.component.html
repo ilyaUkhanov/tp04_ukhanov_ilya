@@ -9,6 +9,8 @@
         <span (click)="submitRemoveProduct(product)"> X </span>
         <br>
         <span (click)="submitAddPanierProduct(product)"> --> </span>
+        <br>
+        <a [routerLink] = "['product/details',product.id]" > Détails </a>
       </div>
     </li>
 
